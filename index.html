@@ -784,11 +784,11 @@
     <div class="projects-grid">
       <div class="project-card" onclick="showDetail(1)">
         <div class="project-num">PROJECT // 001</div>
-        <div class="project-title">프로젝트 이름 1</div>
+        <div class="project-title">MFT — 멀티플레이어 해전 게임</div>
         <div class="project-tags">
-          <div class="project-tag">문제 정의</div>
-          <div class="project-tag">재현 방법</div>
-          <div class="project-tag">디버그 로그</div>
+          <div class="project-tag">Photon PUN2 네트워크 동기화</div>
+          <div class="project-tag">PhotonView ID 기반 오브젝트 탐색</div>
+          <div class="project-tag">AI 활용 디버깅</div>
         </div>
       </div>
       <div class="project-card" onclick="showDetail(2)">
@@ -814,10 +814,10 @@
   </div>
   <div class="project-list">
     <a class="project-list-item" href="#" onclick="showDetail(1);return false;">
-      <span class="pli-index">001</span>
-      <span class="pli-name">프로젝트 이름 1</span>
-      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
-    </a>
+  <span class="pli-index">001</span>
+  <span class="pli-name">MFT</span>
+  <span class="pli-desc">Photon PUN2 기반 P2P 멀티플레이어 해전 게임</span>
+</a>
     <a class="project-list-item" href="#" onclick="showDetail(2);return false;">
       <span class="pli-index">002</span>
       <span class="pli-name">프로젝트 이름 2</span>
@@ -895,7 +895,7 @@
         <div class="tech-badge">C++</div>
       </div>
       <div class="detail-actions">
-        <button class="btn-primary">GitHub 보기</button>
+        <button class="btn-primary" id="detail-github-btn" onclick="if(window._currentGithub)openLink(window._currentGithub)">GitHub 보기</button>
         <button class="btn-outline">문서 보기</button>
       </div>
     </div>
@@ -917,7 +917,7 @@
       <a href="#" class="blog-link">최근 공부 내용 1 →</a>
       <a href="#" class="blog-link">디버깅 기록: 문제명 →</a>
       <a href="#" class="blog-link">분석 글: 주제명 →</a>
-      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:1rem;font-family:'Share Tech Mono',monospace;">← 만들면 블로그 링크로 교체</p>
+      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:1rem;font-family:'Share Tech Mono',monospace;">← 블로그 링크로 교체하세요</p>
     </div>
 
     <div class="blog-card">
@@ -944,14 +944,14 @@
 
     <div class="blog-card">
       <div class="blog-card-title">// EXTERNAL LINKS</div>
-      <a href="#" class="ext-link">Blog <span>→ 만들면 링크 교체</span></a>
-      <a href="#" class="ext-link">Notion <span>→ 만들면 링크 교체</span></a>
-      <a href="#" class="ext-link">Docs <span>→ 만들면 링크 교체</span></a>
+      <a href="#" class="ext-link">Blog <span>→ 링크 교체</span></a>
+      <a href="#" class="ext-link">Notion <span>→ 링크 교체</span></a>
+      <a href="#" class="ext-link">Docs <span>→ 링크 교체</span></a>
     </div>
   </div>
 
   <footer-bar>
-    이 포트폴리오는 계속 업데이트됩니다 // CHA MIN SU © 2026
+    이 포트폴리오는 계속 업데이트됩니다 // CHA MIN SU © 2025
   </footer-bar>
 </div>
 
@@ -968,12 +968,10 @@
       <div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.4rem;">EMAIL</div>
         <div style="font-family:'Share Tech Mono',monospace;color:var(--cyan);font-size:0.9rem;">cms76870051@gmail.com</div>
-        
       </div>
       <div>
         <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.4rem;">GITHUB</div>
         <div style="font-family:'Share Tech Mono',monospace;color:var(--cyan);font-size:0.9rem;">github.com/minsu616</div>
-        
       </div>
     </div>
   </div>
@@ -1087,13 +1085,14 @@
 
   const projects = [
     {
-      num: '001', name: '프로젝트 이름 1',
-      subtitle: '프로젝트 한 줄 설명을 입력하세요',
-      problem: '문제 정의: 어떤 버그나 과제를 발견했는지 설명합니다.',
-      cause: '원인 분석: 왜 이 문제가 발생했는지 분석합니다.',
-      repro: '재현 방법 및 디버그 로그를 여기에 기록합니다.',
-      solution: '해결 방법과 검증 결과를 입력합니다.',
-      stack: ['Unity', 'C#', 'C++']
+      num: '001', name: 'MFT — 멀티플레이어 해전 게임',
+      subtitle: 'Photon PUN2 기반 P2P 멀티플레이어 해전 게임',
+      problem: '멀티플레이어 전투 중 공격한 적 함선을 네트워크 상에서 찾지 못해 데미지가 정상적으로 적용되지 않는 버그 발생',
+      cause: 'Photon 이벤트로 공격 데이터를 수신할 때 적 함선 오브젝트를 이름으로 탐색하는데, 클라이언트마다 오브젝트 변수명이 달라 참조 실패',
+      repro: '두 클라이언트 접속 후 전투 시작 → 함선 공격 시 PhotonBattleSync.cs:234 에서 대상 오브젝트를 찾지 못하고 즉시 데미지 적용되는 로그 확인',
+      solution: 'AI(Claude) 질의를 통해 오브젝트 탐색 기준을 변수명에서 PhotonView ID 기반으로 변경하여 동기화 문제 해결. 문제 분석 및 설계는 직접 수행, AI는 해결책 탐색 보조로 활용',
+      stack: ['Unity', 'C#', 'Photon PUN2'],
+      github: 'https://github.com/minsu616/MFT'
     },
     {
       num: '002', name: '프로젝트 이름 2',
@@ -1116,6 +1115,7 @@
     document.getElementById('d-solution').textContent = p.solution;
     const stackEl = document.getElementById('d-stack');
     stackEl.innerHTML = p.stack.map(s => `<div class="tech-badge">${s}</div>`).join('');
+    window._currentGithub = p.github || null;
     showPage('project-detail', null);
   }
 </script>
