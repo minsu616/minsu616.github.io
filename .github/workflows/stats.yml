@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
       - name: Fetch GitHub Stats
         run: |
           COMMITS=$(curl -s -H "Authorization: token ${{ secrets.GH_TOKEN }}" \
@@ -20,6 +23,11 @@ jobs:
             | python3 -c "import sys,json; print(sum(r['stargazers_count'] for r in json.load(sys.stdin)))")
           sed -i "s/COMMIT_COUNT/$COMMITS/g" index.html
           sed -i "s/STAR_COUNT/$STARS/g" index.html
-      - uses: actions/commit-and-push@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Commit and Push
+        run: |
+          git config user.name "minsu616"
+          git config user.email "minsu616@users.noreply.github.com"
+          git add index.html
+          git diff --staged --quiet || git commit -m "Update GitHub Stats"
+          git push
