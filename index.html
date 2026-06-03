@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>차민수 | Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Noto+Sans+KR:wght@300;400;500;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a0f;
+    --bg2: #0a1220;
+    --bg3: #0d1a2d;
+    --cyan: #00e5ff;
+    --cyan-dim: #00b4cc;
+    --cyan-glow: rgba(0,229,255,0.15);
+    --teal: #00ffcc;
+    --accent: #7b61ff;
+    --text: #c8d8e8;
+    --text-muted: #6a8aaa;
+    --border: rgba(0,229,255,0.2);
+    --border-bright: rgba(0,229,255,0.5);
+    --card-bg: rgba(10,18,32,0.95);
+  }
+
+  body.light {
+    --bg: #f4f7fb;
+    --bg2: #e8eef7;
+    --bg3: #dde5f2;
+    --cyan: #0077aa;
+    --cyan-dim: #005f8a;
+    --cyan-glow: rgba(0,119,170,0.1);
+    --text: #1a2a3a;
+    --text-muted: #5a7a9a;
+    --border: rgba(0,119,170,0.2);
+    --border-bright: rgba(0,119,170,0.5);
+    --card-bg: rgba(255,255,255,0.95);
+  }
+
+  body.light::before {
+    background-image:
+      linear-gradient(rgba(0,119,170,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,119,170,0.04) 1px, transparent 1px);
+  }
+
+  /* THEME TOGGLE BUTTON */
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Noto Sans KR', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3rem;
+    height: 60px;
+    background: rgba(5,10,15,0.9);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(10px);
+  }
+
+  nav .logo {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  nav ul {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: color 0.2s;
+    font-family: 'Share Tech Mono', monospace;
+  }
+
+  nav a:hover, nav a.active { color: var(--cyan); }
+
+  /* PAGES */
+  .page {
+    display: none;
+    min-height: 100vh;
+    padding-top: 60px;
+    position: relative;
+    z-index: 1;
+  }
+  .page.active { display: block; }
+
+  /* ============ MAIN PAGE ============ */
+  #main {
+    display: none;
+  }
+  #main.active { display: block; }
+
+  /* HERO */
+  .hero {
+    padding: 6rem 3rem 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 900;
+    line-height: 1.05;
+    color: #fff;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.35s forwards;
+  }
+
+  .hero-name span {
+    color: var(--cyan);
+    display: block;
+  }
+
+  .hero-subtitle {
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    color: var(--text-muted);
+    max-width: 480px;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.5s forwards;
+    font-weight: 300;
+  }
+
+  .hero-divider {
+    width: 60px;
+    height: 2px;
+    background: var(--cyan);
+    margin: 2rem 0;
+    opacity: 0;
+    animation: fadeUp 0.6s 0.65s forwards;
+  }
+
+  /* TECH STACK */
+  .section {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 3rem;
+  }
+
+  .section-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+    max-width: 200px;
+  }
+
+  .tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .tech-badge {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    color: var(--cyan-dim);
+    padding: 0.5rem 1.2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    transition: all 0.2s;
+  }
+
+  .tech-badge:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--cyan-glow);
+  }
+
+  /* STAT */
+  .stat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex;
+    gap: 3rem;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  }
+
+  .stat-item {
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Orbitron', monospace;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--cyan);
+    display: block;
+  }
+
+  .stat-lbl {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 0.3rem;
+  }
+
+  /* PROJECTS GRID */
+  .projects-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-outline {
+    border: 1px solid var(--border-bright);
+    color: var(--cyan);
+    background: transparent;
+    padding: 0.5rem 1.2rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+
+  .btn-outline:hover {
+    background: var(--cyan-glow);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .project-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    cursor: pointer;
+    transition: all 0.25s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .project-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--cyan);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+
+  .project-card:hover {
+    border-color: var(--border-bright);
+    background: var(--bg3);
+  }
+
+  .project-card:hover::after { transform: scaleX(1); }
+
+  .project-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    letter-spacing: 2px;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    color: var(--cyan);
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+
+  .project-tags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .project-tag {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .project-tag::before {
+    content: '▸';
+    color: var(--cyan);
+    font-size: 0.6rem;
+  }
+
+  /* ============ ANOTHER PROJECTS ============ */
+  .project-list {
+    max-width: 700px;
+    margin: 3rem auto 0;
+    padding: 0 3rem;
+  }
+
+  .project-list-item {
+    display: flex;
+    align-items: baseline;
+    gap: 1.5rem;
+    padding: 1.2rem 0;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .project-list-item:hover {
+    padding-left: 0.5rem;
+  }
+
+  .project-list-item:hover .pli-name {
+    color: var(--cyan);
+  }
+
+  .pli-index {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    min-width: 30px;
+  }
+
+  .pli-name {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--cyan-dim);
+    flex: 1;
+    transition: color 0.2s;
+  }
+
+  .pli-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    flex: 2;
+  }
+
+  /* ============ PROJECT DETAIL ============ */
+  .detail-hero {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 3rem 3rem;
+    position: relative;
+  }
+
+  .detail-hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 3rem; right: 3rem;
+    height: 1px;
+    background: linear-gradient(90deg, var(--cyan), transparent);
+  }
+
+  .detail-back {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    margin-bottom: 2rem;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .detail-back:hover { color: var(--cyan); }
+
+  .detail-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: 900;
+    color: #fff;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .detail-title span { color: var(--cyan); }
+
+  .detail-body {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .detail-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+  }
+
+  .detail-card-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1.2rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .detail-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .detail-item::before {
+    content: '◆';
+    color: var(--cyan);
+    font-size: 0.5rem;
+    margin-top: 0.4rem;
+    flex-shrink: 0;
+  }
+
+  .detail-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  .btn-primary {
+    background: var(--cyan);
+    color: var(--bg);
+    border: none;
+    padding: 0.6rem 1.5rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-primary:hover { background: #fff; }
+
+  /* ============ BLOG / FOOTER ============ */
+  .blog-grid {
+    max-width: 1100px;
+    margin: 3rem auto 0;
+    padding: 0 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .blog-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    padding: 1.75rem;
+    transition: border-color 0.2s;
+  }
+
+  .blog-card:hover { border-color: var(--border-bright); }
+
+  .blog-card-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--cyan);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .blog-link {
+    display: block;
+    color: var(--cyan-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(0,229,255,0.08);
+    font-family: 'Share Tech Mono', monospace;
+    transition: color 0.2s, padding-left 0.2s;
+  }
+
+  .blog-link:hover { color: var(--cyan); padding-left: 0.5rem; }
+
+  .blog-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text);
+    padding: 0.4rem 0;
+    line-height: 1.5;
+  }
+
+  .blog-list-item::before {
+    content: '▸';
+    color: var(--cyan);
+    font-size: 0.6rem;
+    margin-top: 0.3rem;
+    flex-shrink: 0;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .status-ok {
+    background: rgba(0,255,100,0.1);
+    border: 1px solid rgba(0,255,100,0.3);
+    color: #00ff64;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #00ff64;
+    animation: pulse 1.5s infinite;
+  }
+
+  .ext-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(0,229,255,0.08);
+    color: var(--cyan-dim);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-family: 'Share Tech Mono', monospace;
+    transition: color 0.2s;
+  }
+
+  .ext-link:hover { color: var(--cyan); }
+
+  .ext-link span { font-size: 0.7rem; color: var(--text-muted); }
+
+  footer-bar {
+    display: block;
+    max-width: 1100px;
+    margin: 3rem auto 0;
+    padding: 2rem 3rem;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  /* PAGE TITLE BANNER */
+  .page-banner {
+    background: var(--bg2);
+    border-bottom: 1px solid var(--border);
+    padding: 3rem 3rem 2rem;
+    position: relative;
+  }
+
+  .page-banner-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .page-banner h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .page-banner h1 span { color: var(--cyan); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  @keyframes scanline {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
+  .scanline {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(transparent, rgba(0,229,255,0.05), transparent);
+    animation: scanline 8s linear infinite;
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .full-span {
+    grid-column: 1 / -1;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 1.5rem; }
+    .section, .hero { padding-left: 1.5rem; padding-right: 1.5rem; }
+    .projects-grid { grid-template-columns: 1fr; }
+    .detail-body { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+    .blog-grid { grid-template-columns: 1fr; padding: 0 1.5rem; }
+    nav ul { gap: 1.2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="scanline"></div>
+
+<nav>
+  <div class="logo">CMS.DEV</div>
+  <ul>
+    <li><a href="#" class="active" onclick="showPage('main',this)">Portfolio</a></li>
+    <li><a href="#" onclick="showPage('projects-all',this)">Projects</a></li>
+    <li><a href="#" onclick="showPage('roadmap',this)">Roadmap</a></li>
+    <li><a href="#" onclick="showPage('blog',this)">Blog</a></li>
+    <li><a href="#" onclick="showPage('contact',this)">Contact</a></li>
+  </ul>
+  <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="테마 변경">🌙</button>
+</nav>
+
+<!-- ========== MAIN PAGE ========== -->
+<div id="main" class="page active">
+
+  <div class="hero">
+    <div class="hero-tag">// PORTFOLIO :: INITIALIZED</div>
+    <h1 class="hero-name">
+      차민수
+      <span>CHA MIN SU</span>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-subtitle">위기 속에서도 해답을 설계하는<br>문제 해결형 개발자</p>
+  </div>
+
+  <div class="section">
+    <div class="section-label">TECH STACK</div>
+    <div class="tech-grid">
+      <div class="tech-badge">C++</div>
+      <div class="tech-badge">Unity</div>
+      <div class="tech-badge">C#</div>
+      <div class="tech-badge">Python</div>
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:1rem;">
+    <div class="section-label">GITHUB STATS</div>
+    <div class="stat-card" style="flex-direction:column;align-items:stretch;gap:0;">
+      <img
+        src="https://github-readme-stats.vercel.app/api?username=minsu616&show_icons=true&theme=transparent&title_color=00e5ff&text_color=c8d8e8&icon_color=00e5ff&border_color=00e5ff&hide_border=false&count_private=true"
+        alt="minsu616 GitHub Stats"
+        style="max-width:420px;height:auto;"
+      />
+    </div>
+  </div>
+
+  <div class="section" style="margin-top:1rem; padding-bottom:4rem;">
+    <div class="projects-header">
+      <div class="section-label" style="margin-bottom:0;">FEATURED PROJECTS</div>
+      <button class="btn-outline" onclick="showPage('projects-all', document.querySelector('nav a:nth-child(2)'))">ALL PROJECTS →</button>
+    </div>
+    <div class="projects-grid">
+      <div class="project-card" onclick="showDetail(1)">
+        <div class="project-num">PROJECT // 001</div>
+        <div class="project-title">프로젝트 이름 1</div>
+        <div class="project-tags">
+          <div class="project-tag">문제 정의</div>
+          <div class="project-tag">재현 방법</div>
+          <div class="project-tag">디버그 로그</div>
+        </div>
+      </div>
+      <div class="project-card" onclick="showDetail(2)">
+        <div class="project-num">PROJECT // 002</div>
+        <div class="project-title">프로젝트 이름 2</div>
+        <div class="project-tags">
+          <div class="project-tag">원인 분석</div>
+          <div class="project-tag">해결 방법</div>
+          <div class="project-tag">결과 검증</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ALL PROJECTS ========== -->
+<div id="projects-all" class="page">
+  <div class="page-banner">
+    <div class="page-banner-inner">
+      <div class="section-label" style="margin-bottom:0.75rem;">ALL PROJECTS</div>
+      <h1>PROJECT <span>ARCHIVE</span></h1>
+    </div>
+  </div>
+  <div class="project-list">
+    <a class="project-list-item" href="#" onclick="showDetail(1);return false;">
+      <span class="pli-index">001</span>
+      <span class="pli-name">프로젝트 이름 1</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+    <a class="project-list-item" href="#" onclick="showDetail(2);return false;">
+      <span class="pli-index">002</span>
+      <span class="pli-name">프로젝트 이름 2</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+    <a class="project-list-item" href="#">
+      <span class="pli-index">003</span>
+      <span class="pli-name">프로젝트 이름 3</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+    <a class="project-list-item" href="#">
+      <span class="pli-index">004</span>
+      <span class="pli-name">프로젝트 이름 4</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+    <a class="project-list-item" href="#">
+      <span class="pli-index">005</span>
+      <span class="pli-name">프로젝트 이름 5</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+    <a class="project-list-item" href="#">
+      <span class="pli-index">006</span>
+      <span class="pli-name">프로젝트 이름 6</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+    <a class="project-list-item" href="#">
+      <span class="pli-index">007</span>
+      <span class="pli-name">프로젝트 이름 7</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+    <a class="project-list-item" href="#">
+      <span class="pli-index">008</span>
+      <span class="pli-name">프로젝트 이름 8</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+    <a class="project-list-item" href="#">
+      <span class="pli-index">009</span>
+      <span class="pli-name">프로젝트 이름 9</span>
+      <span class="pli-desc">간단한 프로젝트 설명을 여기에 입력하세요</span>
+    </a>
+  </div>
+</div>
+
+<!-- ========== PROJECT DETAIL ========== -->
+<div id="project-detail" class="page">
+  <div class="detail-hero">
+    <div style="max-width:1100px;margin:0 auto;">
+      <button class="detail-back" onclick="history.back(); showPage('main', document.querySelector('nav a'))">◀ BACK</button>
+      <h1 class="detail-title" id="detail-title">PROJECT <span>001</span></h1>
+      <p style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-muted);font-family:'Share Tech Mono',monospace;" id="detail-subtitle">프로젝트 한 줄 설명</p>
+    </div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-card">
+      <div class="detail-card-title">// PROBLEM DEFINITION</div>
+      <div class="detail-item" id="d-problem">문제 정의 내용을 여기에 입력하세요. 어떤 문제를 발견했는지 설명합니다.</div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-card-title">// ROOT CAUSE ANALYSIS</div>
+      <div class="detail-item" id="d-cause">원인 분석 내용을 여기에 입력하세요. 왜 이 문제가 발생했는지 분석합니다.</div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-card-title">// REPRODUCTION METHOD</div>
+      <div class="detail-item" id="d-repro">재현 방법 및 디버그 로그 내용을 입력하세요.</div>
+    </div>
+    <div class="detail-card">
+      <div class="detail-card-title">// SOLUTION & RESULTS</div>
+      <div class="detail-item" id="d-solution">해결 방법과 결과 검증 내용을 입력하세요.</div>
+    </div>
+    <div class="detail-card full-span">
+      <div class="detail-card-title">// TECH STACK USED</div>
+      <div style="display:flex;gap:0.75rem;flex-wrap:wrap;" id="d-stack">
+        <div class="tech-badge">Unity</div>
+        <div class="tech-badge">C#</div>
+        <div class="tech-badge">C++</div>
+      </div>
+      <div class="detail-actions">
+        <button class="btn-primary">GitHub 보기</button>
+        <button class="btn-outline">문서 보기</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== BLOG / FOOTER ========== -->
+<div id="blog" class="page">
+  <div class="page-banner">
+    <div class="page-banner-inner">
+      <div class="section-label" style="margin-bottom:0.75rem;">BLOG & LOGS</div>
+      <h1>DEV <span>JOURNAL</span></h1>
+    </div>
+  </div>
+
+  <div class="blog-grid" style="margin-top:2.5rem;">
+    <div class="blog-card">
+      <div class="blog-card-title">// LATEST POSTS</div>
+      <a href="#" class="blog-link">최근 공부 내용 1 →</a>
+      <a href="#" class="blog-link">디버깅 기록: 문제명 →</a>
+      <a href="#" class="blog-link">분석 글: 주제명 →</a>
+      <p style="font-size:0.7rem;color:var(--text-muted);margin-top:1rem;font-family:'Share Tech Mono',monospace;">← 블로그 링크로 교체하세요</p>
+    </div>
+
+    <div class="blog-card">
+      <div class="blog-card-title">// GITHUB ACTIONS LOG</div>
+      <div class="blog-list-item">자동으로 추가되는 커밋 로그</div>
+      <div class="blog-list-item">날짜별 작업 기록</div>
+      <div class="blog-list-item">작업 흐름 자동화</div>
+      <div style="margin-top:1rem;">
+        <div class="status-badge status-ok">
+          <div class="status-dot"></div>
+          ACTIONS RUNNING
+        </div>
+      </div>
+    </div>
+
+    <div class="blog-card">
+      <div class="blog-card-title">// ACTIONS STATUS</div>
+      <div class="blog-list-item">실행 성공 여부 표시</div>
+      <div class="blog-list-item">자동화 파이프라인 상태</div>
+      <div style="margin-top:1rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+        <span class="status-badge status-ok"><div class="status-dot"></div>BUILD PASS</span>
+      </div>
+    </div>
+
+    <div class="blog-card">
+      <div class="blog-card-title">// EXTERNAL LINKS</div>
+      <a href="#" class="ext-link">Blog <span>→ 링크 교체</span></a>
+      <a href="#" class="ext-link">Notion <span>→ 링크 교체</span></a>
+      <a href="#" class="ext-link">Docs <span>→ 링크 교체</span></a>
+    </div>
+  </div>
+
+  <footer-bar>
+    이 포트폴리오는 계속 업데이트됩니다 // CHA MIN SU © 2025
+  </footer-bar>
+</div>
+
+<!-- ========== CONTACT ========== -->
+<div id="contact" class="page">
+  <div class="page-banner">
+    <div class="page-banner-inner">
+      <div class="section-label" style="margin-bottom:0.75rem;">CONTACT</div>
+      <h1>GET IN <span>TOUCH</span></h1>
+    </div>
+  </div>
+  <div class="section" style="margin-top:2rem;max-width:600px;">
+    <div class="stat-card" style="flex-direction:column;align-items:flex-start;gap:1.2rem;">
+      <div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.4rem;">EMAIL</div>
+        <div style="font-family:'Share Tech Mono',monospace;color:var(--cyan);font-size:0.9rem;">your.email@example.com</div>
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:0.3rem;">← 이메일 주소로 교체하세요</div>
+      </div>
+      <div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.4rem;">GITHUB</div>
+        <div style="font-family:'Share Tech Mono',monospace;color:var(--cyan);font-size:0.9rem;">github.com/minsu616</div>
+        <div style="font-size:0.7rem;color:var(--text-muted);margin-top:0.3rem;">← GitHub 주소로 교체하세요</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ROADMAP ========== -->
+<div id="roadmap" class="page">
+  <div class="page-banner">
+    <div class="page-banner-inner">
+      <div class="section-label" style="margin-bottom:0.75rem;">CAREER ROADMAP</div>
+      <h1>1 — 3 — <span>5</span></h1>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:3rem auto 0;padding:0 3rem 5rem;">
+
+    <!-- 5년 -->
+    <div style="display:flex;gap:2rem;margin-bottom:3rem;align-items:flex-start;">
+      <div style="flex-shrink:0;text-align:center;">
+        <div style="font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--cyan);line-height:1;">5Y</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--text-muted);letter-spacing:2px;margin-top:0.3rem;">VISION</div>
+        <div style="width:1px;height:60px;background:var(--border);margin:1rem auto 0;"></div>
+      </div>
+      <div class="detail-card" style="flex:1;">
+        <div class="detail-card-title">// 장기 비전</div>
+        <p style="font-size:0.9rem;line-height:1.9;color:var(--text);">
+          맡은 일을 책임감 있게 끝까지 해내는 <span style="color:var(--cyan);font-weight:500;">백엔드·데이터 개발자</span>로서,
+          계속 배우고 성장하며 내가 맡은 서비스와 시스템을 안정적으로 운영하는 사람이 된다.
+        </p>
+      </div>
+    </div>
+
+    <!-- 3년 -->
+    <div style="display:flex;gap:2rem;margin-bottom:3rem;align-items:flex-start;">
+      <div style="flex-shrink:0;text-align:center;">
+        <div style="font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--cyan);line-height:1;">3Y</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--text-muted);letter-spacing:2px;margin-top:0.3rem;">OKR</div>
+        <div style="width:1px;height:60px;background:var(--border);margin:1rem auto 0;"></div>
+      </div>
+      <div class="detail-card" style="flex:1;">
+        <div class="detail-card-title">// 중기 목표</div>
+        <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1.2rem;line-height:1.7;">
+          편입 성공 후 전공 수업·프로젝트를 통해 실무에 가까운 경험을 쌓으며, 프로그래밍 관련 기사 자격증 취득 역량을 갖춘다.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:0.9rem;">
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--cyan);background:var(--cyan-glow);border:1px solid var(--border);padding:0.2rem 0.5rem;flex-shrink:0;">KR1</span>
+            <span style="font-size:0.85rem;color:var(--text);line-height:1.6;">2년 내 인서울 4년제 컴퓨터 관련 학과로 <strong style="color:var(--cyan);font-weight:500;">편입 합격</strong></span>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--cyan);background:var(--cyan-glow);border:1px solid var(--border);padding:0.2rem 0.5rem;flex-shrink:0;">KR2</span>
+            <span style="font-size:0.85rem;color:var(--text);line-height:1.6;">편입 후 1년간 전공 과목 평균 학점 <strong style="color:var(--cyan);font-weight:500;">3.5 이상</strong> 유지</span>
+          </div>
+          <div style="display:flex;gap:1rem;align-items:flex-start;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--cyan);background:var(--cyan-glow);border:1px solid var(--border);padding:0.2rem 0.5rem;flex-shrink:0;">KR3</span>
+            <span style="font-size:0.85rem;color:var(--text);line-height:1.6;">프로그래밍 기사 자격증 필기 합격 수준으로 기출 문제 <strong style="color:var(--cyan);font-weight:500;">3회독 이상</strong> 완료</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 1년 -->
+    <div style="display:flex;gap:2rem;align-items:flex-start;">
+      <div style="flex-shrink:0;text-align:center;">
+        <div style="font-family:'Orbitron',monospace;font-size:2rem;font-weight:900;color:var(--cyan);line-height:1;">1Y</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--text-muted);letter-spacing:2px;margin-top:0.3rem;">SMART</div>
+      </div>
+      <div class="detail-card" style="flex:1;">
+        <div class="detail-card-title">// 단기 목표 — 2027년 12월까지</div>
+        <div style="display:flex;flex-direction:column;gap:1.2rem;">
+          <div style="border-left:2px solid var(--cyan);padding-left:1rem;">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.4rem;">GOAL 01 — 편입 전략</div>
+            <p style="font-size:0.85rem;color:var(--text);line-height:1.7;">희망 편입 대학 3곳 이상의 전형 요강과 요구 과목을 정리한 <span style="color:var(--cyan);">계획서 완성</span></p>
+          </div>
+          <div style="border-left:2px solid var(--cyan);padding-left:1rem;">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.4rem;">GOAL 02 — 학습 루틴</div>
+            <p style="font-size:0.85rem;color:var(--text);line-height:1.7;">편입 수학/전공 과목 문제집을 <span style="color:var(--cyan);">주 5일, 하루 2시간 이상</span> 공부하여 각 과목 기출 2회독 이상 완료</p>
+          </div>
+          <div style="border-left:2px solid var(--cyan);padding-left:1rem;">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--text-muted);letter-spacing:2px;margin-bottom:0.4rem;">GOAL 03 — 코딩 유지</div>
+            <p style="font-size:0.85rem;color:var(--text);line-height:1.7;"><span style="color:var(--cyan);">주 3일 이상</span> 알고리즘·코딩 연습, GitHub 커밋 <span style="color:var(--cyan);">150개 이상</span> 기록</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function toggleTheme() {
+    const isLight = document.body.classList.toggle('light');
+    document.getElementById('themeBtn').textContent = isLight ? '🌑' : '🌙';
+    localStorage.setItem('theme', isLight ? 'light' : 'dark');
+  }
+  if (localStorage.getItem('theme') === 'light') {
+    document.body.classList.add('light');
+    document.addEventListener('DOMContentLoaded', () => {
+      const btn = document.getElementById('themeBtn');
+      if (btn) btn.textContent = '🌑';
+    });
+  }
+
+  function showPage(id, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if (navEl) navEl.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  const projects = [
+    {
+      num: '001', name: '프로젝트 이름 1',
+      subtitle: '프로젝트 한 줄 설명을 입력하세요',
+      problem: '문제 정의: 어떤 버그나 과제를 발견했는지 설명합니다.',
+      cause: '원인 분석: 왜 이 문제가 발생했는지 분석합니다.',
+      repro: '재현 방법 및 디버그 로그를 여기에 기록합니다.',
+      solution: '해결 방법과 검증 결과를 입력합니다.',
+      stack: ['Unity', 'C#', 'C++']
+    },
+    {
+      num: '002', name: '프로젝트 이름 2',
+      subtitle: '프로젝트 한 줄 설명을 입력하세요',
+      problem: '문제 정의 내용을 입력하세요.',
+      cause: '원인 분석 내용을 입력하세요.',
+      repro: '재현 방법과 디버그 내용을 입력하세요.',
+      solution: '해결 방법과 결과를 입력하세요.',
+      stack: ['Python', 'C++']
+    }
+  ];
+
+  function showDetail(idx) {
+    const p = projects[idx - 1];
+    document.getElementById('detail-title').innerHTML = `PROJECT <span>${p.num}</span> — ${p.name}`;
+    document.getElementById('detail-subtitle').textContent = p.subtitle;
+    document.getElementById('d-problem').textContent = p.problem;
+    document.getElementById('d-cause').textContent = p.cause;
+    document.getElementById('d-repro').textContent = p.repro;
+    document.getElementById('d-solution').textContent = p.solution;
+    const stackEl = document.getElementById('d-stack');
+    stackEl.innerHTML = p.stack.map(s => `<div class="tech-badge">${s}</div>`).join('');
+    showPage('project-detail', null);
+  }
+</script>
+</body>
+</html>
